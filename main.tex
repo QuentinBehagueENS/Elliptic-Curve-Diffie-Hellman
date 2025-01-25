@@ -112,6 +112,7 @@
     \end{array}
 }
 
+
 \newcommand{\un}[1]{[\![1, #1 ]\!]}
 
 \newcommand{\ens}[2]{ \left\{ #1 \; \middle| \; #2 \right\} }
@@ -134,6 +135,7 @@
 
 \newcommand{\sgn}{\triangleleft}
 \newcommand{\cqpc}{$\rightsquigarrow \C\Q\P\C$}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%% Compteurs %%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -163,11 +165,61 @@
 \hypersetup{linkcolor=gray}
 \newpage
 %_________________________________________________________________________
+\section{Comment utiliser Tikz}
+\begin{figure}[H]
+    \centering
+    \begin{tikzpicture}[scale=1.2]
+        \clip (-3.2,-3.2) rectangle (3.2,3.2);
+        \draw[->] (-3,0) -- (3,0) node[below] {$x$};
+        \draw[->] (0,-3) -- (0,3) node[left] {$y$};
+        \def\a{-1}
+        \def\b{1}
+        \draw[domain=-1.4:2.5,smooth,variable=\x,samples=200]
+            plot ({\x}, {sqrt(max(0,\x*\x*\x + \a*\x + \b))})
+            plot ({\x}, {-sqrt(max(0,\x*\x*\x + \a*\x + \b))});
+        %%%\node[left] at (1,2) {$y^2 = x^3 + \a x + \b$};
+    \end{tikzpicture}
+\caption{Courbe elliptique $y^2 = x^3 - x + 1$ sur le plan}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \begin{tikzpicture}[scale=0.5]
+    \pgfmathsetmacro{\p}{13}    
+    \pgfmathsetmacro{\a}{-5}
+    \pgfmathsetmacro{\b}{0}
+    \draw[step=1cm,gray,very thin] (0,0) grid (\p - 1,\p - 1);
+    \foreach \x in {0,...,\numexpr\p-1\relax} {
+        \pgfmathsetmacro{\rhs}{mod(\x*\x*\x + \a*\x + \b, \p)}
+        \foreach \y in {0,...,\numexpr\p-1\relax} {
+            \pgfmathsetmacro{\lhs}{mod(\y*\y, \p)}
+            \ifnum \pdfstrcmp{\lhs}{\rhs}=0
+                \fill (\x,\y) circle[radius=0.2];
+            \fi
+        }
+    }
+    % Draw axes
+    \draw[->] (-1,0) -- (\p,0) node[below] {$x$};
+    \draw[->] (0,-1) -- (0,\p) node[left] {$y$};
+
+    % Label grid boundaries
+    \foreach \x in {1,...,\numexpr\p-1\relax} {
+        \draw (\x,0) -- (\x,-0.2) node[below] {\tiny \x};
+    }
+    \foreach \y in {1,...,\numexpr\p-1\relax} {
+        \draw (0,\y) -- (-0.2,\y) node[left] {\tiny \y};
+    }
+    \end{tikzpicture}
+    
+\caption{Courbe elliptique $y^2 = x^3 - x + 1$ dans $\Z / 13\Z$}
+\end{figure}
+
+
 \section{Introduction}
 
 \section{Diffie-Hellmann}
 
-\section{Elliptic Curve Diffie-Hellmann}
 
+\section{Elliptic Curve Diffie-Hellmann}
 
 \end{document}
